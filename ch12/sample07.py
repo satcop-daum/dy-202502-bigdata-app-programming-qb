@@ -29,7 +29,14 @@ print('-'*50)
 print(df_raw)
 
 columns = ['station_code', 'people_in', 'people_out']
-data_in = df_raw[columns][ df_raw['timestamp'].dt.hour <= 9 ].groupby('station_code').sum()
+#data_in = df_raw[columns][ df_raw['timestamp'].dt.hour <= 9 ].groupby('station_code').sum()
+data_in = df_raw[ 17 <= df_raw['timestamp'].dt.hour]
+data_in = data_in[columns][ data_in['timestamp'].dt.hour <= 19  ]
+data_in = data_in.groupby('station_code').sum()
+
+# java, c#, c++, php,javascript....
+# 17 <= hour <= 19
+# 17 <= hour (&& and) hour <= 19
 
 print('-'*50)
 print(df_station)
@@ -45,18 +52,10 @@ print(join_in)
 
 map = folium.Map(location=[37.50018, 126.8676], zoom_start=12)
 
+# 퇴근시간에 가장많이 분포된 역(승차기준), PM5:00 ~ PM:7:00
+column_in = ['geo.latitude', 'geo.longitude', 'people_in']
 
 # 히트맵 플러그인 지도에 추가하기
-#column_in = ['geo.latitude', 'geo.longitude', 'people_in']
-#HeatMap(data = join_in[column_in]).add_to(map)
-
-# 출근시간에 가장많이 분포된 역(하차기준)
-column_out = ['geo.latitude', 'geo.longitude', 'people_out']
-HeatMap(data = join_in[column_out]).add_to(map)
+HeatMap(data = join_in[column_in]).add_to(map)
 
 map.show_in_browser()
-
-# 퇴근시간에 가장많이 분포된 역(승차기준), PM5:00 ~ PM:7:00
-
-
-
