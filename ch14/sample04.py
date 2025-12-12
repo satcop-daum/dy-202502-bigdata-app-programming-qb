@@ -7,6 +7,10 @@ df_raw = pd.read_csv(file_name)
 lowest_price = 5
 highest_price = 11
 
+df_raw['date_time'] = pd.to_datetime(df_raw['date'])
+df_raw = df_raw[df_raw['date_time'].dt.year >= 2021]
+df_raw.drop(columns=['date_time'], axis=1, inplace=True)
+
 # 5,6,7,8,9,10,11
 # 8 = 11 - ((11 - 5) / 2)
 # 11 - 3
@@ -22,11 +26,11 @@ print('-'*50)
 print(df_raw.info())
 print(df_raw.head())
 
-#df_raw.plot.line()
-#
-
-df_raw[-50:].boxplot(column='middle_price', by=['date_month'])
+df_raw.plot.line()
 plt.show()
+
+#df_raw[-50:].boxplot(column='middle_price', by=['date_month'])
+#plt.show()
 
 
 
